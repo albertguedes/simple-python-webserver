@@ -1,4 +1,4 @@
-# Minimal PYTHON Webserver
+# Simple PYTHON Webserver
 
 This script is a minimum python web server to run html page.
 To run it simply type:  

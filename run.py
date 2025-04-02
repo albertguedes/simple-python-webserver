@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 #
-# run.py - Minimum python web server to run html page
+# run.py - Simple python web server to run html page
 #
 # created: 2025-04-02
 # author: Albert R. Carnier Guedes (albert@teko.net.br)
