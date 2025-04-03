@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 #
-# run.py - Simple python web server to run html page
+# http_server.py - Simple python web server to run html page
 #
 # created: 2025-04-02
 # author: Albert R. Carnier Guedes (albert@teko.net.br)
@@ -32,8 +32,7 @@ import time
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 class WebServer(BaseHTTPRequestHandler):
-    def do_GET(self):
-        
+    def do_GET(self):        
         """
         Handle GET requests.
 
