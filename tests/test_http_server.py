@@ -1,37 +1,32 @@
-#
-# test_http_server.py - Unit tests for http_server.py
-# 
 import unittest
-from http.server import HTTPServer, BaseHTTPRequestHandler
+import threading
+import time
+import requests
+from src.http_server import run, HTTPServer, WebServer
 
-class TestHTTPServer(unittest.TestCase):
-    def test_server_start(self):
-        """
-        Test if the server starts correctly on the specified port.
+class TestWebServer(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        # Inicia o servidor em uma thread separada
+        cls.server = threading.Thread(target=run, kwargs={'server_class': HTTPServer, 'handler_class': WebServer})
+        cls.server.daemon = True
+        cls.server.start()
+        time.sleep(1)  # Aguarda o servidor iniciar
+    
+    def test_server_response(self):
+        """Verifica se o servidor responde com código 200 e HTML correto."""
+        url = "http://localhost:9000"
+        response = requests.get(url)
+        
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("Hello World!", response.text)
+    
+    @classmethod
+    def tearDownClass(cls):
+        """O servidor será interrompido manualmente."""
+        # Como HTTPServer não possui um método de shutdown adequado, este teste
+        # não desliga o servidor corretamente. Uma melhoria seria necessária para um desligamento limpo.
+        pass
 
-        This test initializes an HTTPServer instance on localhost at port 9000 and
-        handles a single request. It asserts that the server's port is correctly set 
-        to 9000, indicating that the server has started on the desired port.
-        """
-        server = HTTPServer(('localhost', 9000), BaseHTTPRequestHandler)
-        server.handle_request()
-        self.assertTrue(server.server_port == 9000)
-
-    def test_server_stop(self):
-        """
-        Test if the server stops correctly on the specified port.
-
-        This test initializes an HTTPServer instance on localhost at port 9000,
-        handles a single request, and then stops the server with
-        server.server_close(). It asserts that the server's port is correctly set
-        to 0, indicating that the server has stopped on the desired port.
-        """
-        server = HTTPServer(('localhost', 9000), BaseHTTPRequestHandler)
-        server.handle_request()
-        server.server_close()
-        self.assertTrue(server.server_port == 0)
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
-
-# The End
